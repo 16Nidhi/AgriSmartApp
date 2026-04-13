@@ -1,0 +1,9 @@
+<resources>
+    <string name="title_activity_advisory_screen">AdvisoryScreen</string>
+    <string name="title_activity_dashboard_screen">DashboardScreen</string>
+    <string name="title_activity_common_ui">CommonUI</string>
+    <string name="title_activity_splash_screen">SplashScreen</string>
+    <string name="title_activity_login_screen">LoginScreen</string>
+    <string name="title_activity_profile_screen">ProfileScreen</string>
+    <string name="title_activity_profile">Profile</string>
+</resources>
