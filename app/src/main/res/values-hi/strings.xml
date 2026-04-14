@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">एग्री स्मार्ट</string>
+    <string name="welcome_back">वापस स्वागत है</string>
+    <string name="hello_user">नमस्ते, %1$s 👋</string>
+    <string name="farm_location">आइए आपके %1$s स्थित खेत की जांच करें</string>
+    <string name="quick_services">त्वरित सेवाएँ</string>
+    <string name="recommended_for_you">आपके लिए अनुशंसित</string>
+
+    <!-- Menu Items -->
+    <string name="menu_home">होम</string>
+    <string name="menu_advisory">सलाहकार</string>
+    <string name="menu_market">बाजार भाव</string>
+    <string name="menu_weather">मौसम</string>
+    <string name="menu_profile">मेरी प्रोफाइल</string>
+    <string name="menu_settings">सेटिंग्स</string>
+
+    <!-- Dashboard Cards -->
+    <string name="weather_sunny">धूप वाला दिन</string>
+    <string name="weather_advice">बीज बोने का सबसे अच्छा समय</string>
+    <string name="get_alert">अलर्ट प्राप्त करें</string>
+</resources>

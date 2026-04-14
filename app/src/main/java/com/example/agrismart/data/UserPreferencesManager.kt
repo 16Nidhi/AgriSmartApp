@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.map
 
 /**
  * Manages user preferences using DataStore.
- * This stores basic info like name, soil type, and login status.
+ * Added LANGUAGE_KEY for localization support.
  */
 private val Context.dataStore by preferencesDataStore(name = "user_prefs")
 
@@ -21,6 +21,7 @@ class UserPreferencesManager(private val context: Context) {
         val SOIL_TYPE_KEY = stringPreferencesKey("soil_type")
         val LOCATION_KEY = stringPreferencesKey("location")
         val IS_LOGGED_IN_KEY = booleanPreferencesKey("is_logged_in")
+        val LANGUAGE_KEY = stringPreferencesKey("language")
     }
 
     // Get the user data as a Flow
@@ -29,7 +30,8 @@ class UserPreferencesManager(private val context: Context) {
             name = preferences[NAME_KEY] ?: "",
             soilType = preferences[SOIL_TYPE_KEY] ?: "Loamy",
             location = preferences[LOCATION_KEY] ?: "",
-            isLoggedIn = preferences[IS_LOGGED_IN_KEY] ?: false
+            isLoggedIn = preferences[IS_LOGGED_IN_KEY] ?: false,
+            language = preferences[LANGUAGE_KEY] ?: "en"
         )
     }
 
@@ -40,6 +42,7 @@ class UserPreferencesManager(private val context: Context) {
             preferences[SOIL_TYPE_KEY] = user.soilType
             preferences[LOCATION_KEY] = user.location
             preferences[IS_LOGGED_IN_KEY] = user.isLoggedIn
+            preferences[LANGUAGE_KEY] = user.language
         }
     }
 

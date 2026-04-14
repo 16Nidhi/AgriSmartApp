@@ -1,9 +1,21 @@
 <resources>
-    <string name="title_activity_advisory_screen">AdvisoryScreen</string>
-    <string name="title_activity_dashboard_screen">DashboardScreen</string>
-    <string name="title_activity_common_ui">CommonUI</string>
-    <string name="title_activity_splash_screen">SplashScreen</string>
-    <string name="title_activity_login_screen">LoginScreen</string>
-    <string name="title_activity_profile_screen">ProfileScreen</string>
-    <string name="title_activity_profile">Profile</string>
+    <string name="app_name">Agri Smart</string>
+    <string name="welcome_back">Welcome Back</string>
+    <string name="hello_user">Hello, %1$s 👋</string>
+    <string name="farm_location">Let\'s check your farm in %1$s</string>
+    <string name="quick_services">Quick Services</string>
+    <string name="recommended_for_you">Recommended for You</string>
+
+    <!-- Menu Items -->
+    <string name="menu_home">Home</string>
+    <string name="menu_advisory">Advisory</string>
+    <string name="menu_market">Market Prices</string>
+    <string name="menu_weather">Weather</string>
+    <string name="menu_profile">My Profile</string>
+    <string name="menu_settings">Settings</string>
+
+    <!-- Dashboard Cards -->
+    <string name="weather_sunny">Sunny Day</string>
+    <string name="weather_advice">Best time for sowing seeds</string>
+    <string name="get_alert">Get Alert</string>
 </resources>
