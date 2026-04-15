@@ -13,6 +13,8 @@
     <string name="menu_weather">मौसम</string>
     <string name="menu_profile">मेरी प्रोफाइल</string>
     <string name="menu_settings">सेटिंग्स</string>
+    <string name="menu_disease_scan">कीट पहचान</string>
+    <string name="menu_feedback">प्रतिक्रिया</string>
 
     <!-- Dashboard Cards -->
     <string name="weather_sunny">धूप वाला दिन</string>

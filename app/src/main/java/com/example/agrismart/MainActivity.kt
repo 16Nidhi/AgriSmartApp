@@ -3,7 +3,6 @@ package com.example.agrismart
 import android.content.Context
 import android.content.res.Configuration
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
@@ -14,6 +13,8 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -28,7 +29,6 @@ import com.example.agrismart.navigation.Screen
 import com.example.agrismart.ui.*
 import com.example.agrismart.ui.theme.AgriSmartTheme
 import com.example.agrismart.utils.NotificationHelper
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import java.util.Locale
 
@@ -36,42 +36,43 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            val context = LocalContext.current
-            val userPreferencesManager = remember { UserPreferencesManager(context) }
-            
-            // Use a state to hold the user, initialized to null
-            var userState by remember { mutableStateOf<User?>(null) }
+            AgriSmartTheme {
+                val context = LocalContext.current
+                val userPreferencesManager = remember { UserPreferencesManager(context) }
+                
+                val userState by userPreferencesManager.userFlow.collectAsState(initial = null)
 
-            // Fetch the user data once when the app starts
-            LaunchedEffect(Unit) {
-                userState = userPreferencesManager.userFlow.first()
-                Log.d("MainActivity", "Initial user state loaded: $userState")
-            }
-
-            if (userState == null) {
-                // Show a simple background while loading the first piece of data
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize().background(MaterialTheme.colorScheme.primary),
-                    contentAlignment = Alignment.Center
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
                 ) {
-                    CircularProgressIndicator(color = MaterialTheme.colorScheme.onPrimary)
-                }
-            } else {
-                val user = userState!!
-                // Update Locale based on user preference
-                val locale = Locale(user.language)
-                Locale.setDefault(locale)
-                val config = Configuration(context.resources.configuration)
-                config.setLocale(locale)
-                val localizedContext = context.createConfigurationContext(config)
-
-                CompositionLocalProvider(LocalContext provides localizedContext) {
-                    AgriSmartTheme {
-                        Surface(
-                            modifier = Modifier.fillMaxSize(),
-                            color = MaterialTheme.colorScheme.background
+                    val user = userState
+                    if (user == null) {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .background(
+                                    Brush.verticalGradient(
+                                        colors = listOf(
+                                            MaterialTheme.colorScheme.primary,
+                                            MaterialTheme.colorScheme.primaryContainer
+                                        )
+                                    )
+                                ),
+                            contentAlignment = Alignment.Center
                         ) {
+                            CircularProgressIndicator(color = Color.White)
+                        }
+                    } else {
+                        val localizedContext = remember(user.language) {
+                            val locale = Locale(user.language)
+                            Locale.setDefault(locale)
+                            val config = Configuration(context.resources.configuration)
+                            config.setLocale(locale)
+                            context.createConfigurationContext(config)
+                        }
+
+                        CompositionLocalProvider(LocalContext provides localizedContext) {
                             AgriSmartApp(userPreferencesManager, user)
                         }
                     }
@@ -88,7 +89,6 @@ fun AgriSmartApp(userPreferencesManager: UserPreferencesManager, initialUser: Us
     val notificationHelper = remember { NotificationHelper(context) }
     val scope = rememberCoroutineScope()
     
-    // Collect updates to the user state for screens that need it
     val userState by userPreferencesManager.userFlow.collectAsState(initial = initialUser)
 
     NavHost(
@@ -150,12 +150,20 @@ fun AgriSmartApp(userPreferencesManager: UserPreferencesManager, initialUser: Us
             )
         }
 
-        composable(Screen.Market.route) {
-            PlaceholderScreen(navController, "Market Prices", "Real-time crop prices coming soon!")
+        composable(Screen.Weather.route) {
+            WeatherScreen(navController = navController, user = userState)
         }
 
-        composable(Screen.Weather.route) {
-            PlaceholderScreen(navController, "Weather Update", "Localized weather alerts coming soon!")
+        composable(Screen.Market.route) {
+            MarketScreen(navController = navController)
+        }
+
+        composable(Screen.DiseaseScan.route) {
+            DiseaseScanScreen(navController = navController)
+        }
+
+        composable(Screen.Feedback.route) {
+            FeedbackScreen(navController = navController)
         }
     }
 }

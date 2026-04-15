@@ -46,8 +46,10 @@ fun DashboardScreen(
         Screen.Advisory to stringResource(R.string.menu_advisory),
         Screen.Market to stringResource(R.string.menu_market),
         Screen.Weather to stringResource(R.string.menu_weather),
+        Screen.DiseaseScan to stringResource(R.string.menu_disease_scan),
         Screen.Profile to stringResource(R.string.menu_profile),
-        Screen.Settings to stringResource(R.string.menu_settings)
+        Screen.Settings to stringResource(R.string.menu_settings),
+        Screen.Feedback to stringResource(R.string.menu_feedback)
     )
 
     ModalNavigationDrawer(
@@ -203,22 +205,22 @@ fun DashboardScreen(
                     
                     val features = listOf(
                         FeatureItem(stringResource(R.string.menu_market), Icons.Default.ShoppingCart, Color(0xFFE3F2FD)),
-                        FeatureItem(stringResource(R.string.menu_advisory), Icons.Default.Info, Color(0xFFF1F8E9)),
+                        FeatureItem(stringResource(R.string.menu_disease_scan), Icons.Default.CameraAlt, Color(0xFFF1F8E9)),
                         FeatureItem(stringResource(R.string.menu_weather), Icons.Default.WbCloudy, Color(0xFFFFF3E0)),
-                        FeatureItem("AI Help", Icons.Default.Face, Color(0xFFF3E5F5))
+                        FeatureItem(stringResource(R.string.menu_feedback), Icons.Default.Feedback, Color(0xFFF3E5F5))
                     )
 
                     Column {
                         Row(modifier = Modifier.fillMaxWidth()) {
                             FeatureCard(features[0], Modifier.weight(1f)) { navController.navigate(Screen.Market.route) }
                             Spacer(modifier = Modifier.width(12.dp))
-                            FeatureCard(features[1], Modifier.weight(1f)) { navController.navigate(Screen.Advisory.route) }
+                            FeatureCard(features[1], Modifier.weight(1f)) { navController.navigate(Screen.DiseaseScan.route) }
                         }
                         Spacer(modifier = Modifier.height(12.dp))
                         Row(modifier = Modifier.fillMaxWidth()) {
                             FeatureCard(features[2], Modifier.weight(1f)) { navController.navigate(Screen.Weather.route) }
                             Spacer(modifier = Modifier.width(12.dp))
-                            FeatureCard(features[3], Modifier.weight(1f)) { /* AI Route */ }
+                            FeatureCard(features[3], Modifier.weight(1f)) { navController.navigate(Screen.Feedback.route) }
                         }
                     }
                     Spacer(modifier = Modifier.height(24.dp))
