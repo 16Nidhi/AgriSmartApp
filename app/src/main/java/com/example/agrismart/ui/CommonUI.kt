@@ -14,9 +14,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
-/**
- * Modern Gradient Button for primary actions.
- */
 @Composable
 fun PrimaryButton(
     text: String,
@@ -30,18 +27,14 @@ fun PrimaryButton(
 
     Button(
         onClick = onClick,
-        modifier = modifier
-            .fillMaxWidth()
-            .height(56.dp)
-            .padding(vertical = 4.dp),
+        modifier = modifier.fillMaxWidth().height(56.dp).padding(vertical = 4.dp),
         contentPadding = PaddingValues(),
         colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
         shape = RoundedCornerShape(16.dp),
         enabled = enabled
     ) {
         Box(
-            modifier = Modifier
-                .fillMaxSize()
+            modifier = Modifier.fillMaxSize()
                 .background(if (enabled) gradient else Brush.linearGradient(listOf(Color.LightGray, Color.Gray)))
                 .padding(horizontal = 16.dp),
             contentAlignment = Alignment.Center
@@ -55,10 +48,6 @@ fun PrimaryButton(
         }
     }
 }
-
-/**
- * Modern Information Card with a cleaner design.
- */
 @Composable
 fun InfoCard(
     title: String,
@@ -68,9 +57,7 @@ fun InfoCard(
     containerColor: Color = MaterialTheme.colorScheme.surface
 ) {
     Card(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(vertical = 8.dp),
+        modifier = modifier.fillMaxWidth().padding(vertical = 8.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
         shape = RoundedCornerShape(24.dp),
         colors = CardDefaults.cardColors(containerColor = containerColor),
@@ -81,13 +68,14 @@ fun InfoCard(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Box(
-                modifier = Modifier
-                    .size(60.dp)
-                    .clip(RoundedCornerShape(16.dp))
+                modifier = Modifier.size(60.dp).clip(RoundedCornerShape(16.dp))
                     .background(MaterialTheme.colorScheme.primaryContainer),
                 contentAlignment = Alignment.Center
             ) {
-                Text(text = icon, fontSize = 32.sp)
+                Text(
+                    text = icon,
+                    fontSize = 32.sp
+                )
             }
             
             Spacer(modifier = Modifier.width(20.dp))

@@ -43,21 +43,24 @@ fun AdvisoryScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(stringResource(R.string.menu_advisory), fontWeight = FontWeight.Bold) },
+                title = {
+                    Text(
+                        stringResource(R.string.menu_advisory),
+                        fontWeight = FontWeight.Bold)},
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        Icon(
+                            Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = "Back"
+                        )
                     }
                 }
             )
         }
     ) { padding ->
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(padding)
-                .background(
-                    Brush.verticalGradient(
+            modifier = Modifier.fillMaxSize().padding(padding)
+                .background(Brush.verticalGradient(
                         colors = listOf(Color.Transparent, MaterialTheme.colorScheme.primary.copy(alpha = 0.05f))
                     )
                 )
@@ -98,9 +101,7 @@ fun AdvisoryScreen(
 @Composable
 fun CropAdvisoryPage(soilType: String, crops: List<com.example.agrismart.data.Crop>) {
     LazyColumn(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
+        modifier = Modifier.fillMaxSize().padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         item {
@@ -125,9 +126,7 @@ fun FertilizerAdvisoryPage(soilType: String) {
     val fertilizers = getFertilizerData(soilType)
     
     LazyColumn(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
+        modifier = Modifier.fillMaxSize().padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         item {
@@ -153,20 +152,34 @@ fun SmartAIAdviceCard(title: String, advice: String) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(20.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.5f))
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.5f)
+        )
     ) {
-        Row(modifier = Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
-            Icon(Icons.Default.AutoAwesome, contentDescription = null, tint = MaterialTheme.colorScheme.secondary)
+        Row(
+            modifier = Modifier.padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                Icons.Default.AutoAwesome,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.secondary
+            )
             Spacer(modifier = Modifier.width(12.dp))
             Column {
-                Text(text = title, fontWeight = FontWeight.Bold, style = MaterialTheme.typography.titleSmall)
-                Text(text = advice, style = MaterialTheme.typography.bodySmall)
+                Text(
+                    text = title,
+                    fontWeight = FontWeight.Bold,
+                    style = MaterialTheme.typography.titleSmall
+                )
+                Text(
+                    text = advice,
+                    style = MaterialTheme.typography.bodySmall
+                )
             }
         }
     }
 }
-
-// --- Updated Smart AI Logic ---
 
 fun getSmartCropAdvice(soilType: String): String = when (soilType) {
     "Sandy" -> "Sandy soil drains quickly. Focus on drought-resistant crops and mulching to retain moisture."

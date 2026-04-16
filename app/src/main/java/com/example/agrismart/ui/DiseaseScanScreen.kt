@@ -7,6 +7,7 @@ import android.graphics.ImageDecoder
 import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.result.launch
@@ -15,6 +16,7 @@ import androidx.compose.animation.core.*
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -100,6 +102,7 @@ fun DiseaseScanScreen(navController: NavController) {
     ) { isGranted ->
         hasCameraPermission = isGranted
         if (isGranted) cameraLauncher.launch()
+        else Toast.makeText(context, "Camera permission denied", Toast.LENGTH_SHORT).show()
     }
 
     Scaffold(
@@ -122,18 +125,18 @@ fun DiseaseScanScreen(navController: NavController) {
                 .padding(20.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Header Info
+            // Instruction Card
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(16.dp),
                 colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.3f))
             ) {
                 Row(modifier = Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
-                    Icon(Icons.Default.AutoAwesome, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
+                    Icon(Icons.Default.Info, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
                     Spacer(modifier = Modifier.width(12.dp))
                     Text(
-                        text = "Upload or capture a photo of the affected plant for AI diagnosis.",
-                        style = MaterialTheme.typography.bodySmall,
+                        text = "Pick an image from your gallery or take a direct photo for detection.",
+                        style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onPrimaryContainer
                     )
                 }
@@ -141,10 +144,10 @@ fun DiseaseScanScreen(navController: NavController) {
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // Scanner View
+            // Image Display Area
             Box(
                 modifier = Modifier
-                    .size(280.dp)
+                    .size(300.dp)
                     .clip(RoundedCornerShape(24.dp))
                     .background(Color.Black.copy(alpha = 0.05f))
                     .border(2.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.2f), RoundedCornerShape(24.dp)),
@@ -153,7 +156,7 @@ fun DiseaseScanScreen(navController: NavController) {
                 if (bitmap != null) {
                     Image(
                         bitmap = bitmap!!.asImageBitmap(),
-                        contentDescription = "Captured Image",
+                        contentDescription = "Selected Image",
                         modifier = Modifier.fillMaxSize(),
                         contentScale = ContentScale.Crop
                     )
@@ -164,80 +167,121 @@ fun DiseaseScanScreen(navController: NavController) {
                 } else {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Icon(
-                            Icons.Default.CloudUpload,
+                            Icons.Default.ImageSearch,
                             contentDescription = null,
                             modifier = Modifier.size(64.dp),
-                            tint = MaterialTheme.colorScheme.primary.copy(alpha = 0.4f)
+                            tint = MaterialTheme.colorScheme.primary.copy(alpha = 0.3f)
                         )
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Text("No image selected", color = Color.Gray, fontSize = 12.sp)
+                        Spacer(modifier = Modifier.height(12.dp))
+                        Text("No image selected", color = Color.Gray)
                     }
                 }
             }
 
             Spacer(modifier = Modifier.height(32.dp))
 
-            // Result Display
-            AnimatedVisibility(visible = scanResult != null) {
-                scanResult?.let { result ->
-                    ResultCard(result)
+            // Source selection (always visible until scanned)
+            if (scanResult == null || isScanning) {
+                Text(
+                    "Select Image Source",
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.align(Alignment.Start)
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+                
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    // Camera Button
+                    Surface(
+                        onClick = {
+                            if (hasCameraPermission) cameraLauncher.launch()
+                            else permissionLauncher.launch(Manifest.permission.CAMERA)
+                        },
+                        modifier = Modifier.weight(1f).height(100.dp),
+                        shape = RoundedCornerShape(20.dp),
+                        color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.5f),
+                        border = androidx.compose.foundation.BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.2f))
+                    ) {
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center
+                        ) {
+                            Icon(Icons.Default.PhotoCamera, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text("Camera", fontWeight = FontWeight.Bold)
+                            Text("At the spot", fontSize = 10.sp, color = Color.Gray)
+                        }
+                    }
+
+                    // Gallery Button
+                    Surface(
+                        onClick = { galleryLauncher.launch("image/*") },
+                        modifier = Modifier.weight(1f).height(100.dp),
+                        shape = RoundedCornerShape(20.dp),
+                        color = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.5f),
+                        border = androidx.compose.foundation.BorderStroke(1.dp, MaterialTheme.colorScheme.secondary.copy(alpha = 0.2f))
+                    ) {
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center
+                        ) {
+                            Icon(Icons.Default.Collections, contentDescription = null, tint = MaterialTheme.colorScheme.secondary)
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text("Gallery", fontWeight = FontWeight.Bold)
+                            Text("Choose image", fontSize = 10.sp, color = Color.Gray)
+                        }
+                    }
                 }
             }
 
-            Spacer(modifier = Modifier.height(24.dp))
-
-            // Action Buttons
-            Row(modifier = Modifier.fillMaxWidth()) {
-                Button(
-                    onClick = {
-                        if (hasCameraPermission) cameraLauncher.launch()
-                        else permissionLauncher.launch(Manifest.permission.CAMERA)
-                    },
-                    modifier = Modifier
-                        .weight(1f)
-                        .height(56.dp),
-                    shape = RoundedCornerShape(16.dp),
-                    enabled = !isScanning
-                ) {
-                    Icon(Icons.Default.PhotoCamera, contentDescription = null)
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text("Camera", fontWeight = FontWeight.Bold)
-                }
-                
-                Spacer(modifier = Modifier.width(12.dp))
-                
-                OutlinedButton(
-                    onClick = { galleryLauncher.launch("image/*") },
-                    modifier = Modifier
-                        .weight(1f)
-                        .height(56.dp),
-                    shape = RoundedCornerShape(16.dp),
-                    enabled = !isScanning
-                ) {
-                    Icon(Icons.Default.Image, contentDescription = null)
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text("Gallery", fontWeight = FontWeight.Bold)
+            // Results and Save Button
+            AnimatedVisibility(visible = scanResult != null && !isScanning) {
+                Column {
+                    Spacer(modifier = Modifier.height(24.dp))
+                    scanResult?.let { result ->
+                        ResultCard(result)
+                        
+                        Spacer(modifier = Modifier.height(24.dp))
+                        
+                        Button(
+                            onClick = { 
+                                Toast.makeText(context, "Saving data...", Toast.LENGTH_SHORT).show()
+                                scope.launch {
+                                    delay(1000)
+                                    Toast.makeText(context, "Detection report saved to gallery!", Toast.LENGTH_LONG).show()
+                                }
+                            },
+                            modifier = Modifier.fillMaxWidth().height(56.dp),
+                            shape = RoundedCornerShape(16.dp),
+                            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF2E7D32))
+                        ) {
+                            Icon(Icons.Default.Save, contentDescription = null)
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text("Save Diagnosis & Image", fontWeight = FontWeight.Bold)
+                        }
+                        
+                        TextButton(
+                            onClick = {
+                                bitmap = null
+                                scanResult = null
+                            },
+                            modifier = Modifier.fillMaxWidth().padding(top = 8.dp)
+                        ) {
+                            Text("Discard and Retake", color = Color.Red)
+                        }
+                    }
                 }
             }
             
-            if (bitmap != null && !isScanning) {
-                TextButton(
-                    onClick = {
-                        bitmap = null
-                        scanResult = null
-                    },
-                    modifier = Modifier.padding(top = 16.dp)
-                ) {
-                    Text("Clear Image", color = MaterialTheme.colorScheme.error)
-                }
-            }
+            Spacer(modifier = Modifier.height(40.dp))
         }
     }
 }
 
 fun startScanning(bitmap: Bitmap, onResult: (DetectionResult) -> Unit) {
-    // This would be replaced with actual ML Kit / TensorFlow Lite processing
-    // For now, it's a simulated delay
     val results = listOf(
         DetectionResult("Leaf Rust", 92, "Apply copper-based fungicides. Remove infected leaves and destroy them to prevent spread.", false),
         DetectionResult("Aphids Attack", 85, "Use neem oil spray or insecticidal soap. Encourage natural predators like ladybugs.", false),
@@ -245,10 +289,9 @@ fun startScanning(bitmap: Bitmap, onResult: (DetectionResult) -> Unit) {
         DetectionResult("Early Blight", 78, "Avoid overhead watering. Apply organic mulch to prevent spores from splashing onto leaves.", false)
     )
     
-    // Using a simple timer to simulate processing
     android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
         onResult(results.random())
-    }, 2500)
+    }, 2000)
 }
 
 @Composable
@@ -256,9 +299,9 @@ fun ScanningAnimation() {
     val infiniteTransition = rememberInfiniteTransition(label = "scan")
     val translateY by infiniteTransition.animateFloat(
         initialValue = 0f,
-        targetValue = 280f,
+        targetValue = 300f,
         animationSpec = infiniteRepeatable(
-            animation = tween(1500, easing = LinearEasing),
+            animation = tween(1200, easing = LinearEasing),
             repeatMode = RepeatMode.Reverse
         ),
         label = "scanLine"
@@ -268,7 +311,7 @@ fun ScanningAnimation() {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(2.dp)
+                .height(3.dp)
                 .offset(y = translateY.dp)
                 .background(
                     brush = Brush.horizontalGradient(

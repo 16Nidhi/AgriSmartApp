@@ -85,8 +85,8 @@ fun SplashScreen(navController: NavController, isLoggedIn: Boolean) {
             Text(
                 text = "Modern Agricultural Advisory",
                 fontSize = 16.sp,
-                color = Color.White.copy(alpha = 0.8f),
-                fontWeight = FontWeight.Light
+                color = Color.White,
+                fontWeight = FontWeight.Bold
             )
         }
     }

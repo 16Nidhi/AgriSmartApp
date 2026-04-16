@@ -121,6 +121,26 @@ fun AgriSmartApp(userPreferencesManager: UserPreferencesManager, initialUser: Us
             )
         }
 
+        composable(Screen.FarmSetup.route) {
+            FarmSetupScreen(
+                navController = navController,
+                user = userState,
+                onSaveFarmDetails = { size, crop, date ->
+                    scope.launch {
+                        userPreferencesManager.saveUser(userState.copy(
+                            landSize = size,
+                            currentCrop = crop,
+                            sowingDate = date
+                        ))
+                    }
+                }
+            )
+        }
+
+        composable(Screen.FarmInsights.route) {
+            FarmInsightsScreen(navController = navController, user = userState)
+        }
+
         composable(Screen.Advisory.route) {
             AdvisoryScreen(navController = navController, soilType = userState.soilType)
         }
@@ -164,43 +184,6 @@ fun AgriSmartApp(userPreferencesManager: UserPreferencesManager, initialUser: Us
 
         composable(Screen.Feedback.route) {
             FeedbackScreen(navController = navController)
-        }
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun PlaceholderScreen(navController: NavController, title: String, message: String) {
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text(title, fontWeight = FontWeight.Bold) },
-                navigationIcon = {
-                    IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
-                    }
-                }
-            )
-        }
-    ) { padding ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(padding),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text(text = "🚜", fontSize = 64.sp)
-            Spacer(modifier = Modifier.height(16.dp))
-            Text(
-                text = message,
-                style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-            Spacer(modifier = Modifier.height(24.dp))
-            Button(onClick = { navController.popBackStack() }) {
-                Text("Go Back")
-            }
         }
     }
 }
