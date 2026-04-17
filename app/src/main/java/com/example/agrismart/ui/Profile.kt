@@ -17,10 +17,6 @@ import androidx.navigation.NavController
 import com.example.agrismart.data.User
 import com.example.agrismart.navigation.Screen
 
-/**
- * Profile Screen for the app.
- * Shows user details and allows the user to logout.
- */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileScreen(
@@ -34,7 +30,9 @@ fun ProfileScreen(
                 title = { Text("Profile") },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+                        Icon(
+                            Icons.Default.ArrowBack,
+                             contentDescription = "Back")
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
@@ -46,13 +44,9 @@ fun ProfileScreen(
         }
     ) { padding ->
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(padding)
-                .padding(24.dp),
+            modifier = Modifier.fillMaxSize().padding(padding).padding(24.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Profile Icon
             Icon(
                 imageVector = Icons.Default.Person,
                 contentDescription = "Profile Picture",
@@ -62,13 +56,19 @@ fun ProfileScreen(
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // User Info
-            Text(text = user.name, fontSize = 24.sp, fontWeight = FontWeight.Bold)
-            Text(text = "Location: ${user.location}", fontSize = 16.sp, color = Color.Gray)
+            Text(
+                text = user.name,
+                fontSize = 24.sp,
+                fontWeight = FontWeight.Bold
+            )
+            Text(
+                text = "Location: ${user.location}",
+                fontSize = 16.sp,
+                color = Color.Gray
+            )
 
             Spacer(modifier = Modifier.height(32.dp))
 
-            // Profile Details
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
@@ -84,7 +84,6 @@ fun ProfileScreen(
 
             Spacer(modifier = Modifier.weight(1f))
 
-            // Logout Button
             Button(
                 onClick = {
                     onLogout()

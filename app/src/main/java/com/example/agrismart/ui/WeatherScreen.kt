@@ -41,28 +41,34 @@ fun WeatherScreen(navController: NavController, user: User) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(stringResource(R.string.menu_weather), fontWeight = FontWeight.Bold) },
+                title = {
+                    Text(
+                        stringResource(R.string.menu_weather),
+                        fontWeight = FontWeight.Bold)
+                        },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        Icon(
+                            Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = "Back"
+                        )
                     }
                 }
             )
         }
     ) { padding ->
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(padding)
+            modifier = Modifier.fillMaxSize().padding(padding)
                 .background(
                     Brush.verticalGradient(
-                        colors = listOf(Color.Transparent, MaterialTheme.colorScheme.primary.copy(alpha = 0.05f))
+                        colors = listOf(Color.Transparent,
+                            MaterialTheme.colorScheme.primary.copy(alpha = 0.05f))
                     )
                 )
                 .padding(20.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Weather Card (Dynamic Location)
+
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(32.dp),
@@ -80,7 +86,7 @@ fun WeatherScreen(navController: NavController, user: User) {
                         fontWeight = FontWeight.ExtraBold
                     )
                     Text(
-                        text = "Clear Sky • ${user.location}", // Dynamic Location from User object
+                        text = "Clear Sky • ${user.location}",
                         style = MaterialTheme.typography.titleMedium,
                         color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.7f)
                     )
@@ -89,7 +95,6 @@ fun WeatherScreen(navController: NavController, user: User) {
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // Forecast Section
             Text(
                 text = "Today's Forecast",
                 style = MaterialTheme.typography.titleLarge,
@@ -98,7 +103,10 @@ fun WeatherScreen(navController: NavController, user: User) {
             )
             Spacer(modifier = Modifier.height(12.dp))
             
-            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
                 ForecastItem("Morning", "22°C", "☀️")
                 ForecastItem("Afternoon", "31°C", "☀️")
                 ForecastItem("Evening", "25°C", "🌤️")
@@ -106,7 +114,6 @@ fun WeatherScreen(navController: NavController, user: User) {
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // AI Prediction Card (SIH Smart Feature)
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(24.dp),
@@ -140,18 +147,26 @@ fun WeatherScreen(navController: NavController, user: User) {
 
             Spacer(modifier = Modifier.weight(1f))
 
-            // Alarm Manager Section
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(24.dp),
                 colors = CardDefaults.cardColors(containerColor = Color.White),
                 elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
             ) {
-                Column(modifier = Modifier.padding(20.dp)) {
+                Column(
+                    modifier = Modifier.padding(20.dp)
+                ) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Icon(Icons.Default.Notifications, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
+                        Icon(
+                            Icons.Default.Notifications,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.primary
+                        )
                         Spacer(modifier = Modifier.width(8.dp))
-                        Text(text = "Weather Reminders", fontWeight = FontWeight.Bold)
+                        Text(
+                            text = "Weather Reminders",
+                            fontWeight = FontWeight.Bold
+                        )
                     }
                     Spacer(modifier = Modifier.height(16.dp))
                     
@@ -191,8 +206,7 @@ fun ForecastItem(time: String, temp: String, icon: String) {
 
 private fun scheduleWeatherAlert(context: Context, hour: Int, minute: Int) {
     val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-    
-    // Check for exact alarm permission for Android 12+ (Unit II Security)
+
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
         if (!alarmManager.canScheduleExactAlarms()) {
             Toast.makeText(context, "Please allow Alarm permission in Settings", Toast.LENGTH_LONG).show()
@@ -223,10 +237,13 @@ private fun scheduleWeatherAlert(context: Context, hour: Int, minute: Int) {
             calendar.timeInMillis,
             pendingIntent
         )
-        Toast.makeText(context, "Alert set for $hour:$minute", Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, "Alert set for $hour:$minute",
+            Toast.LENGTH_SHORT).show()
     } catch (e: SecurityException) {
-        Toast.makeText(context, "Permission error: Cannot set exact alarm", Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, "Permission error: Cannot set exact alarm",
+            Toast.LENGTH_SHORT).show()
     } catch (e: Exception) {
-        Toast.makeText(context, "Error setting alert", Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, "Error setting alert",
+            Toast.LENGTH_SHORT).show()
     }
 }

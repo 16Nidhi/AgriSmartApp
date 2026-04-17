@@ -17,9 +17,6 @@ import androidx.navigation.NavController
 import com.example.agrismart.data.User
 import com.example.agrismart.navigation.Screen
 
-/**
- * Modern Login Screen for user onboarding.
- */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginScreen(
@@ -34,18 +31,16 @@ fun LoginScreen(
     val soilTypes = listOf("Loamy", "Clayey", "Sandy", "Black", "Silty")
 
     Box(
-        modifier = Modifier
-            .fillMaxSize()
+        modifier = Modifier.fillMaxSize()
             .background(
                 Brush.verticalGradient(
-                    colors = listOf(MaterialTheme.colorScheme.surface, MaterialTheme.colorScheme.background)
+                    colors = listOf(MaterialTheme.colorScheme.surface,
+                        MaterialTheme.colorScheme.background)
                 )
             )
     ) {
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(24.dp)
+            modifier = Modifier.fillMaxSize().padding(24.dp)
                 .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
@@ -73,7 +68,6 @@ fun LoginScreen(
 
             Spacer(modifier = Modifier.height(40.dp))
 
-            // Form Card
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
@@ -81,7 +75,7 @@ fun LoginScreen(
                 colors = CardDefaults.cardColors(containerColor = Color.White.copy(alpha = 0.5f))
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
-                    // Name Input
+
                     OutlinedTextField(
                         value = name,
                         onValueChange = { name = it },
@@ -93,7 +87,6 @@ fun LoginScreen(
 
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    // Location Input
                     OutlinedTextField(
                         value = location,
                         onValueChange = { location = it },
@@ -105,7 +98,6 @@ fun LoginScreen(
 
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    // Soil Type Dropdown
                     ExposedDropdownMenuBox(
                         expanded = expanded,
                         onExpandedChange = { expanded = !expanded },
@@ -117,9 +109,7 @@ fun LoginScreen(
                             readOnly = true,
                             label = { Text("Primary Soil Type") },
                             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
-                            modifier = Modifier
-                                .menuAnchor()
-                                .fillMaxWidth(),
+                            modifier = Modifier.menuAnchor().fillMaxWidth(),
                             shape = MaterialTheme.shapes.medium
                         )
 
@@ -143,7 +133,6 @@ fun LoginScreen(
 
             Spacer(modifier = Modifier.height(40.dp))
 
-            // Save and Continue Button
             PrimaryButton(
                 text = "Generate My Advisory",
                 onClick = {

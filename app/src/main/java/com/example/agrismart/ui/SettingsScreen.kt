@@ -24,20 +24,23 @@ fun SettingsScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(stringResource(R.string.menu_settings), fontWeight = FontWeight.Bold) },
+                title = {
+                    Text(
+                        stringResource(R.string.menu_settings),
+                        fontWeight = FontWeight.Bold)
+                        },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+                        Icon(
+                            Icons.Default.ArrowBack,
+                            contentDescription = "Back")
                     }
                 }
             )
         }
     ) { padding ->
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(padding)
-                .padding(16.dp)
+            modifier = Modifier.fillMaxSize().padding(padding).padding(16.dp)
         ) {
             Text(
                 text = "Language / भाषा",
@@ -46,12 +49,9 @@ fun SettingsScreen(
             )
             Spacer(modifier = Modifier.height(16.dp))
 
-            // English Option
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 8.dp)
+                modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp)
             ) {
                 RadioButton(
                     selected = user.language == "en",
@@ -64,12 +64,9 @@ fun SettingsScreen(
                 )
             }
 
-            // Hindi Option
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 8.dp)
+                modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp)
             ) {
                 RadioButton(
                     selected = user.language == "hi",

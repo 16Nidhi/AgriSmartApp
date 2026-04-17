@@ -19,9 +19,6 @@ import androidx.navigation.NavController
 import com.example.agrismart.navigation.Screen
 import kotlinx.coroutines.delay
 
-/**
- * Modern Splash Screen with animations.
- */
 @Composable
 fun SplashScreen(navController: NavController, isLoggedIn: Boolean) {
     var startAnimation by remember { mutableStateOf(false) }
@@ -47,9 +44,7 @@ fun SplashScreen(navController: NavController, isLoggedIn: Boolean) {
     }
 
     Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(
+        modifier = Modifier.fillMaxSize().background(
                 Brush.verticalGradient(
                     colors = listOf(
                         MaterialTheme.colorScheme.primary,
@@ -61,12 +56,10 @@ fun SplashScreen(navController: NavController, isLoggedIn: Boolean) {
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.padding(alphaAnim.value.dp * 20) // Subtle movement
+            modifier = Modifier.padding(alphaAnim.value.dp * 20)
         ) {
             Box(
-                modifier = Modifier
-                    .size(120.dp)
-                    .clip(CircleShape)
+                modifier = Modifier.size(120.dp).clip(CircleShape)
                     .background(Color.White.copy(alpha = 0.2f)),
                 contentAlignment = Alignment.Center
             ) {

@@ -31,19 +31,23 @@ fun FeedbackScreen(navController: NavController) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Feedback", fontWeight = FontWeight.Bold) },
+                title = {
+                    Text(
+                        "Feedback",
+                        fontWeight = FontWeight.Bold)
+                        },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        Icon(
+                            Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = "Back")
                     }
                 }
             )
         }
     ) { padding ->
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(padding)
+            modifier = Modifier.fillMaxSize().padding(padding)
                 .background(
                     Brush.verticalGradient(
                         colors = listOf(Color.Transparent, MaterialTheme.colorScheme.primary.copy(alpha = 0.05f))
@@ -72,9 +76,7 @@ fun FeedbackScreen(navController: NavController) {
                             imageVector = if (i <= rating) Icons.Default.Star else Icons.Outlined.StarOutline,
                             contentDescription = null,
                             tint = if (i <= rating) Color(0xFFFFB300) else Color.Gray,
-                            modifier = Modifier
-                                .size(48.dp)
-                                .clickable { rating = i }
+                            modifier = Modifier.size(48.dp).clickable { rating = i }
                         )
                     }
                 }
@@ -85,9 +87,7 @@ fun FeedbackScreen(navController: NavController) {
                     value = feedbackText,
                     onValueChange = { feedbackText = it },
                     label = { Text("Write your suggestions...") },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(150.dp),
+                    modifier = Modifier.fillMaxWidth().height(150.dp),
                     shape = RoundedCornerShape(16.dp),
                     colors = OutlinedTextFieldDefaults.colors(
                         focusedContainerColor = Color.White,
